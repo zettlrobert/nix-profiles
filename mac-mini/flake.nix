@@ -4,7 +4,7 @@
   inputs = {
     # Latest stable Nixpkgs 0
     # Unstable Nixpkgs 0.1
-    nixpkgs.url = "https://flakehub.com/f/NixOS/nixpkgs/0.1";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
   };
 
   outputs = { self, nixpkgs }:
@@ -43,15 +43,15 @@
             lua-language-server
             lua53Packages.luarocks_bootstrap
             mongosh
-            nvim
             # https://exiftool.org/
             perl538Packages.ImageExifTool
             presenterm
             redli
             static-web-server
+	    starship
             tealdeer
             tree-sitter
-            trunk-io
+            # trunk-io
             yazi
             yt-dlp
             zoxide
