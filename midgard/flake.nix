@@ -19,24 +19,32 @@
 
       # Helper to provide system-specific attributes
       forAllSystems = f:
-        nixpkgs.lib.genAttrs allSystems
-          (system: f { pkgs = import nixpkgs { inherit system; }; });
-    in
-    {
+        nixpkgs.lib.genAttrs allSystems (system:
+          f {
+            pkgs = import nixpkgs {
+              inherit system;
+              config = { allowUnfree = true; };
+            };
+          });
+    in {
       packages = forAllSystems ({ pkgs }: {
         default = pkgs.buildEnv {
           name = "default";
           paths = with pkgs; [
+            bat
             bottom
+            coreutils-full
             delta
             eza
             fastfetch
             fd
+            fzf
             gh
             glow
             go
             google-cloud-sdk
             imagemagick
+            jq
             kanata
             lazydocker
             lazygit
@@ -49,14 +57,15 @@
             presenterm
             redli
             static-web-server
+            starship
             tealdeer
             tree-sitter
-            trunk-io
             yazi
             yt-dlp
             zoxide
 
             # Unfree
+            trunk-io
             # terraform
 
             # TODO: Evaluate

@@ -1,5 +1,5 @@
 {
-  description = "Flake for `mac-mini` system packages";
+  description = "Flake for `midgard` system packages";
 
   inputs = {
     # Latest stable Nixpkgs 0
@@ -26,8 +26,7 @@
               config = { allowUnfree = true; };
             };
           });
-    in
-    {
+    in {
       packages = forAllSystems ({ pkgs }: {
         default = pkgs.buildEnv {
           name = "default";
@@ -67,7 +66,6 @@
 
             # Unfree
             # terraform
-            # trunk-io
 
             # TODO: Evaluate
             # aria2-1.37.0
