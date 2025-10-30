@@ -1,7 +1,7 @@
 {
   description = "Nix flake for core packages";
 
-  inputs = { nixpks.url = "github:NixOS/nixpkgs/nixpkgs-unstable"; };
+  inputs = { nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable"; };
 
   outputs = { self, nixpkgs }:
     let

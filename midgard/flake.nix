@@ -5,9 +5,10 @@
     # Latest stable Nixpkgs 0
     # Unstable Nixpkgs 0.1
     nixpkgs.url = "https://flakehub.com/f/NixOS/nixpkgs/0.1";
+    core.url = "path:../core-packages";
   };
 
-  outputs = { self, nixpkgs }:
+  outputs = { self, nixpkgs, core }:
     let
       # Systems supported
       allSystems = [
@@ -26,60 +27,16 @@
               config = { allowUnfree = true; };
             };
           });
-    in {
+    in
+    {
       packages = forAllSystems ({ pkgs }: {
         default = pkgs.buildEnv {
-          name = "default";
+          name = "midgard";
           paths = with pkgs; [
-            bat
-            bottom
-            cargo
-            coreutils-full
-            delta
-            eza
-            fastfetch
-            fd
-            fzf
-            gh
-            glow
-            go
-            google-cloud-sdk
-            imagemagick
-            jq
-            kanata
-            lazydocker
-            lazygit
-            lua
-            lua-language-server
-            lua53Packages.luarocks_bootstrap
-            mongosh
-            # https://exiftool.org/
-            perl538Packages.ImageExifTool
-            presenterm
-            redli
-            static-web-server
-            starship
-            tealdeer
-            tree-sitter
-            yazi
-            yt-dlp
-            zoxide
+            core.packages.${pkgs.system}.default
 
-            # Unfree
-            trunk-io
-            # terraform
-
-            # TODO: Evaluate
-            # aria2-1.37.0
-            # cargo-1.82.0
-            # cargo-c-0.10.2
-            # httrack-3.49.2
-            # https://www.infernojs.org/
-            # inferno-0.11.21
-            # neofetch-unstable-2021-12-10
-            # r-treesitter-0.1.0
-            # xone-0.3-unstable-2024-03-16
-
+            # Custom Packages
+            opentofu
           ];
         };
       });
