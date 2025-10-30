@@ -33,6 +33,7 @@
           paths = with pkgs; [
             bat
             bottom
+            cargo
             coreutils-full
             delta
             eza

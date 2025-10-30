@@ -34,6 +34,7 @@
           paths = with pkgs; [
             bat
             bottom
+            cargo
             coreutils-full
             delta
             eza
@@ -53,6 +54,7 @@
             lua-language-server
             lua53Packages.luarocks_bootstrap
             mongosh
+            neovim-unwrapped
             # https://exiftool.org/
             perl538Packages.ImageExifTool
             presenterm
