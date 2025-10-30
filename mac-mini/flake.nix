@@ -51,6 +51,7 @@
             static-web-server
             tealdeer
             tree-sitter
+            trunk-io
             yazi
             yt-dlp
             zoxide

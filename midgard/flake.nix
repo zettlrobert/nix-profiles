@@ -20,8 +20,9 @@
       # Helper to provide system-specific attributes
       forAllSystems = f:
         nixpkgs.lib.genAttrs allSystems
-        (system: f { pkgs = import nixpkgs { inherit system; }; });
-    in {
+          (system: f { pkgs = import nixpkgs { inherit system; }; });
+    in
+    {
       packages = forAllSystems ({ pkgs }: {
         default = pkgs.buildEnv {
           name = "default";
@@ -50,6 +51,7 @@
             static-web-server
             tealdeer
             tree-sitter
+            trunk-io
             yazi
             yt-dlp
             zoxide
