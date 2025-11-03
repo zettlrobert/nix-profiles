@@ -71,8 +71,6 @@
 
             # TODO: Evaluate
             # aria2-1.37.0
-            # cargo-1.82.0
-            # cargo-c-0.10.2
             # httrack-3.49.2
             # https://www.infernojs.org/
             # inferno-0.11.21
