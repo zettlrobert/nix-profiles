@@ -37,6 +37,9 @@
 
             # Custom Packages
             opentofu
+
+            # Programming Languages
+            nodejs_24
           ];
         };
       });
