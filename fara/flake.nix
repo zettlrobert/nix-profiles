@@ -27,10 +27,11 @@
               config = { allowUnfree = true; };
             };
           });
-    in {
+    in
+    {
       packages = forAllSystems ({ pkgs }: {
         default = pkgs.buildEnv {
-          name = "midgard";
+          name = "fara";
           paths = with pkgs; [
             core.packages.${pkgs.system}.default
 
@@ -40,6 +41,8 @@
             # Programming Languages
             nodejs_24
             (pnpm.override { nodejs = nodejs_24; })
+
+            vim
           ];
         };
       });
