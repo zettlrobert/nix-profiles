@@ -39,8 +39,8 @@
             opentofu
 
             # Programming Languages
-            nodejs_24
-            (pnpm.override { nodejs = nodejs_24; })
+            # nodejs_24
+            # (pnpm.override { nodejs = nodejs_24; })
 
             # GPU
             amdgpu_top
