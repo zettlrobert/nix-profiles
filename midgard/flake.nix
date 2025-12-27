@@ -44,6 +44,10 @@
 
             # GPU
             amdgpu_top
+
+            # Wayland
+            grim
+            wl-clipboard
           ];
         };
       });
