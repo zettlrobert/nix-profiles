@@ -34,6 +34,9 @@
           name = "fara";
           paths = with pkgs; [
             core.packages.${pkgs.system}.default
+            vim
+            atuin
+            ripgrep
 
             # Custom Packages
             opentofu
@@ -42,7 +45,9 @@
             nodejs_24
             (pnpm.override { nodejs = nodejs_24; })
 
-            vim
+            # Wayland
+            grim
+            wl-clipboard
           ];
         };
       });
