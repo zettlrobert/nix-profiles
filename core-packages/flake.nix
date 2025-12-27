@@ -62,6 +62,7 @@
               yazi
               yt-dlp
               zoxide
+              stow
 
               # Unfree
               # terraform
