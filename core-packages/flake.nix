@@ -68,11 +68,13 @@
               # terraform
               # trunk-io
             ];
-        in pkgs:
+        in
+        pkgs:
         pkgs.buildEnv {
           name = "core";
           paths = corePackages pkgs;
         };
 
-    in { packages = forAllSystems ({ pkgs }: { default = core pkgs; }); };
+    in
+    { packages = forAllSystems ({ pkgs }: { default = core pkgs; }); };
 }
