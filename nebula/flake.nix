@@ -11,12 +11,7 @@
   outputs = { self, nixpkgs, core }:
     let
       # Systems supported
-      allSystems = [
-        "x86_64-linux" # 64-bit Intel/AMD Linux
-        "aarch64-linux" # 64-bit ARM Linux
-        "x86_64-darwin" # 64-bit Intel macOS
-        "aarch64-darwin" # 64-bit ARM macOS
-      ];
+      allSystems = [ "aarch64-linux" ];
 
       # Helper to provide system-specific attributes
       forAllSystems = f:
@@ -33,10 +28,26 @@
         default = pkgs.buildEnv {
           name = "nebula";
           paths = with pkgs; [
-            core.packages.${pkgs.system}.default
-
             # Custom Packages
-            zsh
+            bat
+            bottom
+            coreutils-full
+            delta
+            eza
+            fastfetch
+            fd
+            fzf
+            go
+            jq
+            lazydocker
+            lazygit
+            mongosh
+            starship
+            tealdeer
+            zoxide
+            yazi
+            stow
+            atuin
           ];
         };
       });
