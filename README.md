@@ -1,15 +1,27 @@
-#U
+# nix-profiles
 
-- `nix profile add`
-- `nix profile upgrade <profile-name>`
+Per-system package profiles built on a shared `core-packages` flake. All system flakes follow `core/nixpkgs` (nixpkgs-unstable), so there is a single nixpkgs pin to manage.
+
+## Updating a system
 
 ```bash
-# Update Flake (in the directory of the flake)
-# Upgrades the flake.lock
+# 1. Update the shared nixpkgs pin
+cd core-packages
 nix flake update
+
+# 2. Update the system flake (picks up core's new pin)
+cd ../<system>
+nix flake update
+
+# 3. Rebuild the profile
+nix profile upgrade --all
 ```
 
+Replace `<system>` with the target directory (e.g. `fara`, `midgard`, `nebula`).
+
+## First-time install
+
 ```bash
-# Add the profile again
-nix profile upgrade <flake>
+cd <system>
+nix profile install .
 ```

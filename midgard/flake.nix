@@ -2,10 +2,8 @@
   description = "Flake for `midgard` system packages";
 
   inputs = {
-    # Latest stable Nixpkgs 0
-    # Unstable Nixpkgs 0.1
-    nixpkgs.url = "https://flakehub.com/f/NixOS/nixpkgs/0.1";
     core.url = "path:../core-packages";
+    nixpkgs.follows = "core/nixpkgs";
   };
 
   outputs = { self, nixpkgs, core }:
