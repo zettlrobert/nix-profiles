@@ -27,12 +27,13 @@
               config = { allowUnfree = true; };
             };
           });
-    in {
+    in
+    {
       packages = forAllSystems ({ pkgs }: {
         default = pkgs.buildEnv {
           name = "midgard";
           paths = with pkgs; [
-            core.packages.${pkgs.system}.default
+            core.packages.${pkgs.stdenv.hostPlatform.system}.default
 
             # Custom Packages
             opentofu
@@ -47,6 +48,10 @@
             # Wayland
             grim
             wl-clipboard
+
+            # Local AI
+            llama-cpp-rocm
+            openai-whisper
           ];
         };
       });
