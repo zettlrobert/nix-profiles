@@ -52,7 +52,7 @@
               mongosh
               neovim-unwrapped
               # https://exiftool.org/
-              perl538Packages.ImageExifTool
+              # perl538Packages.ImageExifTool
               presenterm
               redli
               static-web-server
