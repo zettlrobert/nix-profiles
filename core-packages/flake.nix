@@ -49,6 +49,7 @@
               lua
               lua-language-server
               lua53Packages.luarocks_bootstrap
+              mermaid-cli
               mongosh
               neovim-unwrapped
               # https://exiftool.org/
