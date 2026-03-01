@@ -36,6 +36,7 @@
               fd # find replacement
               fzf # fuzzy finder
               git # version control
+              git-lfs # git large file storage
               imagemagick # image manipulation
               ripgrep # grep replacement
               tree-sitter # parser library (used by neovim)
