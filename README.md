@@ -45,4 +45,5 @@ nix profile upgrade --all
 
 - [docs/bootstrap.md](docs/bootstrap.md) — installing Nix and getting the repo onto a new machine
 - [docs/usage.md](docs/usage.md) — full `nix profile` command reference (add, upgrade, remove, rollback, gc)
+- [docs/workflow.md](docs/workflow.md) — day-to-day patterns: flake refs, trying tools, multiple profiles, conflicts
 - [docs/structure.md](docs/structure.md) — how packages and profiles are wired together; how to add new ones
