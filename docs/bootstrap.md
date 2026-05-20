@@ -23,11 +23,11 @@ git clone https://github.com/zettlrobert/nix-profiles.git ~/repositories/github.
 cd ~/repositories/github.com/zettlrobert/nix-profiles
 ```
 
-## 3. Install the profile for your host
+## 3. Add the profile for your host
 
 ```bash
 cd profiles/<host>
-nix profile install .
+nix profile add .
 ```
 
 Pick the directory matching your machine (`fara`, `midgard`, `nebula`, `mac-mini`) or create a new one (see `structure.md`).

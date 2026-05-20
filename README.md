@@ -6,7 +6,7 @@ Per-host package profiles for non-NixOS systems, built on a shared `core-package
 
 ```
 nix-profiles/
-├── docs/                          # bootstrap and structure notes
+├── docs/                          # bootstrap, structure, usage
 ├── packages/
 │   ├── core-packages/             # shared base, every profile pulls this in
 │   └── freecad-mcp/               # standalone installable flake
@@ -19,34 +19,30 @@ nix-profiles/
 
 `packages/` holds anything that produces a derivation. `profiles/` holds per-host `buildEnv` compositions that consume one or more packages.
 
-## Updating a system
+## Quick start
+
+Add a profile:
 
 ```bash
-# 1. Update the shared nixpkgs pin
-cd packages/core-packages
-nix flake update
+nix profile add ./profiles/<host>
+```
 
-# 2. Update the profile (picks up core's new pin via `nixpkgs.follows`)
-cd ../../profiles/<host>
-nix flake update
+Add a single package (no profile):
 
-# 3. Rebuild the active profile
+```bash
+nix profile add ./packages/freecad-mcp
+```
+
+Update everything:
+
+```bash
+cd packages/core-packages && nix flake update
+cd ../../profiles/<host>  && nix flake update
 nix profile upgrade --all
 ```
 
-Replace `<host>` with the target directory (e.g. `fara`, `midgard`, `nebula`, `mac-mini`).
+## Documentation
 
-## First-time install
-
-Whole profile:
-
-```bash
-cd profiles/<host>
-nix profile install .
-```
-
-Just one packaged tool, no profile:
-
-```bash
-nix profile install ./packages/freecad-mcp
-```
+- [docs/bootstrap.md](docs/bootstrap.md) — installing Nix and getting the repo onto a new machine
+- [docs/usage.md](docs/usage.md) — full `nix profile` command reference (add, upgrade, remove, rollback, gc)
+- [docs/structure.md](docs/structure.md) — how packages and profiles are wired together; how to add new ones
