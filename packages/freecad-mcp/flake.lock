@@ -1,21 +1,5 @@
 {
   "nodes": {
-    "freecad-mcp": {
-      "inputs": {
-        "nixpkgs": [
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "path": "../freecad-mcp",
-        "type": "path"
-      },
-      "original": {
-        "path": "../freecad-mcp",
-        "type": "path"
-      },
-      "parent": []
-    },
     "nixpkgs": {
       "locked": {
         "lastModified": 1778869304,
@@ -34,7 +18,6 @@
     },
     "root": {
       "inputs": {
-        "freecad-mcp": "freecad-mcp",
         "nixpkgs": "nixpkgs"
       }
     }

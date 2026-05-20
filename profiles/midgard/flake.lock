@@ -2,17 +2,37 @@
   "nodes": {
     "core": {
       "inputs": {
+        "freecad-mcp": "freecad-mcp",
         "nixpkgs": "nixpkgs"
       },
       "locked": {
-        "path": "../core-packages",
+        "path": "../../packages/core-packages",
         "type": "path"
       },
       "original": {
-        "path": "../core-packages",
+        "path": "../../packages/core-packages",
         "type": "path"
       },
       "parent": []
+    },
+    "freecad-mcp": {
+      "inputs": {
+        "nixpkgs": [
+          "core",
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "path": "../freecad-mcp",
+        "type": "path"
+      },
+      "original": {
+        "path": "../freecad-mcp",
+        "type": "path"
+      },
+      "parent": [
+        "core"
+      ]
     },
     "nixpkgs": {
       "locked": {

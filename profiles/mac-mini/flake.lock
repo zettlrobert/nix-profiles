@@ -1,12 +1,46 @@
 {
   "nodes": {
+    "core": {
+      "inputs": {
+        "freecad-mcp": "freecad-mcp",
+        "nixpkgs": "nixpkgs"
+      },
+      "locked": {
+        "path": "../../packages/core-packages",
+        "type": "path"
+      },
+      "original": {
+        "path": "../../packages/core-packages",
+        "type": "path"
+      },
+      "parent": []
+    },
+    "freecad-mcp": {
+      "inputs": {
+        "nixpkgs": [
+          "core",
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "path": "../freecad-mcp",
+        "type": "path"
+      },
+      "original": {
+        "path": "../freecad-mcp",
+        "type": "path"
+      },
+      "parent": [
+        "core"
+      ]
+    },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1761656231,
-        "narHash": "sha256-EiED5k6gXTWoAIS8yQqi5mAX6ojnzpHwAQTS3ykeYMg=",
+        "lastModified": 1778869304,
+        "narHash": "sha256-30sZNZoA1cqF5JNO9fVX+wgiQYjB7HJqqJ4ztCDeBZE=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "e99366c665bdd53b7b500ccdc5226675cfc51f45",
+        "rev": "d233902339c02a9c334e7e593de68855ad26c4cb",
         "type": "github"
       },
       "original": {
@@ -18,7 +52,11 @@
     },
     "root": {
       "inputs": {
-        "nixpkgs": "nixpkgs"
+        "core": "core",
+        "nixpkgs": [
+          "core",
+          "nixpkgs"
+        ]
       }
     }
   },
