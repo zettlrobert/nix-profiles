@@ -2,7 +2,7 @@
   description = "Flake for `nebula` system packages";
 
   inputs = {
-    core.url = "path:../core-packages";
+    core.url = "path:../../packages/core-packages";
     nixpkgs.follows = "core/nixpkgs";
   };
 

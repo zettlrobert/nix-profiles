@@ -2,7 +2,7 @@
   description = "Flake for `midgard` system packages";
 
   inputs = {
-    core.url = "path:../core-packages";
+    core.url = "path:../../packages/core-packages";
     nixpkgs.follows = "core/nixpkgs";
   };
 
@@ -32,9 +32,6 @@
           name = "midgard";
           paths = with pkgs; [
             core.packages.${pkgs.stdenv.hostPlatform.system}.default
-
-            # Custom Packages
-            opentofu
 
             # Programming Languages
             # nodejs_24

@@ -1,8 +1,8 @@
 {
-  description = "Flake for `farar` system packages";
+  description = "Flake for `fara` system packages";
 
   inputs = {
-    core.url = "path:../core-packages";
+    core.url = "path:../../packages/core-packages";
     nixpkgs.follows = "core/nixpkgs";
   };
 
@@ -34,11 +34,7 @@
             core.packages.${pkgs.system}.default
             vim
             atuin
-            ripgrep
             syncthing
-
-            # Custom Packages
-            opentofu
 
             # Programming Languages
             nodejs_24
