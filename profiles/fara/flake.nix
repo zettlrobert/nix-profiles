@@ -31,7 +31,7 @@
         default = pkgs.buildEnv {
           name = "fara";
           paths = with pkgs; [
-            core.packages.${pkgs.system}.default
+            core.packages.${pkgs.stdenv.hostPlatform.system}.default
             vim
             atuin
             syncthing

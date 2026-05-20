@@ -31,11 +31,11 @@
         default = pkgs.buildEnv {
           name = "mac-mini";
           paths = with pkgs; [
-            core.packages.${pkgs.system}.default
+            core.packages.${pkgs.stdenv.hostPlatform.system}.default
 
             # macOS-specific extras
             # https://exiftool.org/
-            perl538Packages.ImageExifTool
+            perlPackages.ImageExifTool
           ];
         };
       });
