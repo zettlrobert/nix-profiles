@@ -7,7 +7,12 @@
     freecad-mcp.inputs.nixpkgs.follows = "nixpkgs";
   };
 
-  outputs = { self, nixpkgs, freecad-mcp }:
+  outputs =
+    {
+      self,
+      nixpkgs,
+      freecad-mcp,
+    }:
     let
       # Systems supported
       allSystems = [
@@ -18,18 +23,23 @@
       ];
 
       # Helper to provide system-specific attributes
-      forAllSystems = f:
-        nixpkgs.lib.genAttrs allSystems (system:
+      forAllSystems =
+        f:
+        nixpkgs.lib.genAttrs allSystems (
+          system:
           f {
             inherit system;
             pkgs = import nixpkgs {
               inherit system;
-              config = { allowUnfree = true; };
+              config = {
+                allowUnfree = true;
+              };
             };
-          });
+          }
+        );
 
-      corePackages = pkgs: system:
-        with pkgs; [
+      corePackages =
+        pkgs: system: with pkgs; [
           # All core packages shared across systems
           # CLI Utils - Modern CLI replacements
           bat # cat replacement
@@ -59,6 +69,7 @@
           # System Tools - Core system utilities
           coreutils-full # GNU Coreutils (full features)
           stow # dotfile manager
+          kopia # backup tool
 
           # Languages - Programming languages
           cargo # Rust
@@ -95,15 +106,19 @@
           freecad-mcp.packages.${system}.default # FreeCAD MCP client
         ];
 
-      core = pkgs: system:
+      core =
+        pkgs: system:
         pkgs.buildEnv {
           name = "core";
           paths = corePackages pkgs system;
         };
     in
     {
-      packages = forAllSystems ({ pkgs, system }: {
-        default = core pkgs system;
-      });
+      packages = forAllSystems (
+        { pkgs, system }:
+        {
+          default = core pkgs system;
+        }
+      );
     };
 }
