@@ -39,6 +39,7 @@
             # Programming Languages
             nodejs_24
             (pnpm.override { nodejs = nodejs_24; })
+            python312
 
             # Wayland
             grim
