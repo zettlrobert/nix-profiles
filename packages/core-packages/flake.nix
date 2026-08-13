@@ -65,6 +65,7 @@
           starship # prompt
           tealdeer # tldr replacement
           zoxide # cd replacement
+          herdr # AI Multiplexer
 
           # System Tools - Core system utilities
           coreutils-full # GNU Coreutils (full features)
