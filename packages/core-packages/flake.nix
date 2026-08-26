@@ -102,6 +102,7 @@
 
           # Presentations - Presentation tools
           presenterm # Markdown presentations
+          python3Packages.pylatexenc # provides `latex2text` for render-markdown LaTeX rendering
 
           # AI / MCP Tools
           freecad-mcp.packages.${system}.default # FreeCAD MCP client
