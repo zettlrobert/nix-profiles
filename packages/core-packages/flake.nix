@@ -95,6 +95,7 @@
           # DevOps/Infrastructure - Infrastructure tools
           google-cloud-sdk # GCP CLI
           opentofu # Terraform replacement (IaC)
+          awscli2 # AWS CLI v2 - S3 API against SeaweedFS/MinIO, etc.
 
           # Databases - Database clients
           mongosh # MongoDB CLI
