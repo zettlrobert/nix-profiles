@@ -71,6 +71,7 @@
           coreutils-full # GNU Coreutils (full features)
           stow # dotfile manager
           kopia # backup tool
+          wakeonlan # send Wake-on-LAN magic packets (UDP, no root)
 
           # Languages - Programming languages
           cargo # Rust
