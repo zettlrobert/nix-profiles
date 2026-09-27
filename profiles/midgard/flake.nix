@@ -6,7 +6,12 @@
     nixpkgs.follows = "core/nixpkgs";
   };
 
-  outputs = { self, nixpkgs, core }:
+  outputs =
+    {
+      self,
+      nixpkgs,
+      core,
+    }:
     let
       # Systems supported
       allSystems = [
@@ -17,12 +22,16 @@
       ];
 
       # Helper to provide system-specific attributes
-      forAllSystems = f:
-        nixpkgs.lib.genAttrs allSystems (system:
+      forAllSystems =
+        f:
+        nixpkgs.lib.genAttrs allSystems (
+          system:
           f {
             pkgs = import nixpkgs {
               inherit system;
-              config = { allowUnfree = true; };
+              config = {
+                allowUnfree = true;
+              };
               overlays = [
                 # llama-cpp 0.4.1 builds its web UI (tools/ui) with nodejs_latest.
                 # Node 26.9.0 fails its own test suite under Nix: test-fs-cp-async-file-modes
@@ -37,31 +46,37 @@
                 })
               ];
             };
-          });
+          }
+        );
     in
     {
-      packages = forAllSystems ({ pkgs }: {
-        default = pkgs.buildEnv {
-          name = "midgard";
-          paths = with pkgs; [
-            core.packages.${pkgs.stdenv.hostPlatform.system}.default
+      packages = forAllSystems (
+        { pkgs }: {
+          default = pkgs.buildEnv {
+            name = "midgard";
+            paths = with pkgs; [
+              core.packages.${pkgs.stdenv.hostPlatform.system}.default
 
-            # Programming Languages
-            # nodejs_24
-            # (pnpm.override { nodejs = nodejs_24; })
+              # Programming Languages
+              # nodejs_24
+              # (pnpm.override { nodejs = nodejs_24; })
 
-            # GPU
-            amdgpu_top
+              # GPU
+              amdgpu_top
 
-            # Wayland
-            grim
-            wl-clipboard
+              # Wayland
+              grim
+              wl-clipboard
 
-            # Local AI
-            llama-cpp-rocm
-            openai-whisper
-          ];
-        };
-      });
+              # Local AI
+              llama-cpp-rocm
+              openai-whisper
+
+              # Identification
+              ausweisapp
+            ];
+          };
+        }
+      );
     };
 }
