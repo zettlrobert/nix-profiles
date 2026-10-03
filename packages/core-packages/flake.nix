@@ -66,6 +66,7 @@
           tealdeer # tldr replacement
           zoxide # cd replacement
           herdr # AI Multiplexer
+          crush # AI coding agent in the terminal (Charm)
 
           # System Tools - Core system utilities
           coreutils-full # GNU Coreutils (full features)
@@ -77,6 +78,7 @@
           cargo # Rust
           gcc # c, c++ compiler
           go # Go
+          pkgsite # local pkg.go.dev docs server for Go modules
           lua # Lua
           lua-language-server # Lua LSP
           lua53Packages.luarocks_bootstrap # Lua package manager
