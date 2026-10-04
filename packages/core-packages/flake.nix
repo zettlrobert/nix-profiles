@@ -73,6 +73,7 @@
           stow # dotfile manager
           kopia # backup tool
           wakeonlan # send Wake-on-LAN magic packets (UDP, no root)
+          android-tools # adb + fastboot for phones and emulators
 
           # Languages - Programming languages
           cargo # Rust
