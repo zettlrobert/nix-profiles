@@ -13,13 +13,10 @@
       core,
     }:
     let
-      # Systems supported
-      allSystems = [
-        "x86_64-linux" # 64-bit Intel/AMD Linux
-        "aarch64-linux" # 64-bit ARM Linux
-        "x86_64-darwin" # 64-bit Intel macOS
-        "aarch64-darwin" # 64-bit ARM macOS
-      ];
+      # midgard is one x86_64 Linux workstation. llama-cpp-rocm, amdgpu_top,
+      # ausweisapp and the Wayland tools are Linux-only in nixpkgs, and ROCm is
+      # x86_64-only in practice, so other systems would fail to evaluate.
+      allSystems = [ "x86_64-linux" ];
 
       # Helper to provide system-specific attributes
       forAllSystems =
