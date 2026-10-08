@@ -27,6 +27,7 @@
         nixpkgs.lib.genAttrs allSystems (
           system:
           f {
+            inherit system;
             pkgs = import nixpkgs {
               inherit system;
               config = {
@@ -38,11 +39,11 @@
     in
     {
       packages = forAllSystems (
-        { pkgs }: {
+        { pkgs, system }: {
           default = pkgs.buildEnv {
             name = "fara";
             paths = with pkgs; [
-              core.packages.${pkgs.stdenv.hostPlatform.system}.default
+              core.packages.${system}.default
               vim
               atuin
               syncthing

@@ -25,6 +25,7 @@
         nixpkgs.lib.genAttrs allSystems (
           system:
           f {
+            inherit system;
             pkgs = import nixpkgs {
               inherit system;
               config = {
@@ -36,7 +37,7 @@
     in
     {
       packages = forAllSystems (
-        { pkgs }: {
+        { pkgs, ... }: {
           default = pkgs.buildEnv {
             name = "nebula";
             paths = with pkgs; [
