@@ -109,6 +109,12 @@
           presenterm # Markdown presentations
           python3Packages.pylatexenc # provides `latex2text` for render-markdown LaTeX rendering
 
+          # Audio
+          # Replaces the flatpak, which stopped persisting its gsettings
+          # Presets live in ~/.config/easyeffects/{input,output} (stowed from
+          # configurations); app settings go to dconf and stay per-machine.
+          easyeffects
+
           # AI / MCP Tools
           freecad-mcp.packages.${system}.default # FreeCAD MCP client
         ];
