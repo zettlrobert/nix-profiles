@@ -33,7 +33,9 @@ inputs = {
 
 The `nixpkgs.follows = "core/nixpkgs"` line is the important one: the profile has no nixpkgs pin of its own and reuses whatever `core-packages/flake.lock` has locked. The profile's own `flake.lock` still records that revision, so bumping core only reaches a profile when that profile runs `nix flake update` too. `update-flakes.sh` does this for all of them in the right order.
 
-The `default` package in each profile is a `buildEnv` whose `paths` list starts with `core.packages.${system}.default` and then adds host-specific extras.
+The `default` package in each profile is a `buildEnv`. fara, midgard and mac-mini start their `paths` list with `core.packages.${system}.default` and add host-specific extras. nebula is the exception: it keeps the `core` input only for the shared nixpkgs pin and lists its own minimal package set instead of pulling in core.
+
+Profiles declare only the systems they are actually installed on. midgard and nebula are single-system (`x86_64-linux` and `aarch64-linux`); fara and mac-mini keep the full list.
 
 ## Adding a new package
 

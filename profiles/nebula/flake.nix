@@ -2,6 +2,9 @@
   description = "Flake for `nebula` system packages";
 
   inputs = {
+    # Only here to share the nixpkgs pin. nebula is a minimal aarch64 box and
+    # deliberately does not install core's packages (easyeffects, android-tools,
+    # the language toolchains); it lists its own small set below.
     core.url = "path:../../packages/core-packages";
     nixpkgs.follows = "core/nixpkgs";
   };
