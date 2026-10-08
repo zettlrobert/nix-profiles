@@ -58,7 +58,7 @@ i=0
 for dir in "${flake_dirs[@]}"; do
   i=$((i + 1))
   step "$i" "$total" "$dir"
-  nix flake update --flake "$dir" 2>&1 | sed "s/^/  ${dim}│${reset} /"
+  nix flake update --flake "./$dir" 2>&1 | sed "s/^/  ${dim}│${reset} /"
   if git diff --quiet -- "$dir/flake.lock"; then
     skip "unchanged"
   else
