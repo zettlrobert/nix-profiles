@@ -6,7 +6,12 @@
     nixpkgs.follows = "core/nixpkgs";
   };
 
-  outputs = { self, nixpkgs, core }:
+  outputs =
+    {
+      self,
+      nixpkgs,
+      core,
+    }:
     let
       # Systems supported
       allSystems = [
@@ -17,27 +22,34 @@
       ];
 
       # Helper to provide system-specific attributes
-      forAllSystems = f:
-        nixpkgs.lib.genAttrs allSystems (system:
+      forAllSystems =
+        f:
+        nixpkgs.lib.genAttrs allSystems (
+          system:
           f {
             pkgs = import nixpkgs {
               inherit system;
-              config = { allowUnfree = true; };
+              config = {
+                allowUnfree = true;
+              };
             };
-          });
+          }
+        );
     in
     {
-      packages = forAllSystems ({ pkgs }: {
-        default = pkgs.buildEnv {
-          name = "mac-mini";
-          paths = with pkgs; [
-            core.packages.${pkgs.stdenv.hostPlatform.system}.default
+      packages = forAllSystems (
+        { pkgs }: {
+          default = pkgs.buildEnv {
+            name = "mac-mini";
+            paths = with pkgs; [
+              core.packages.${pkgs.stdenv.hostPlatform.system}.default
 
-            # macOS-specific extras
-            # https://exiftool.org/
-            perlPackages.ImageExifTool
-          ];
-        };
-      });
+              # macOS-specific extras
+              # https://exiftool.org/
+              perlPackages.ImageExifTool
+            ];
+          };
+        }
+      );
     };
 }

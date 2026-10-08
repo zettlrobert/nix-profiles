@@ -6,7 +6,12 @@
     nixpkgs.follows = "core/nixpkgs";
   };
 
-  outputs = { self, nixpkgs, core }:
+  outputs =
+    {
+      self,
+      nixpkgs,
+      core,
+    }:
     let
       # Systems supported
       allSystems = [
@@ -17,34 +22,41 @@
       ];
 
       # Helper to provide system-specific attributes
-      forAllSystems = f:
-        nixpkgs.lib.genAttrs allSystems (system:
+      forAllSystems =
+        f:
+        nixpkgs.lib.genAttrs allSystems (
+          system:
           f {
             pkgs = import nixpkgs {
               inherit system;
-              config = { allowUnfree = true; };
+              config = {
+                allowUnfree = true;
+              };
             };
-          });
+          }
+        );
     in
     {
-      packages = forAllSystems ({ pkgs }: {
-        default = pkgs.buildEnv {
-          name = "fara";
-          paths = with pkgs; [
-            core.packages.${pkgs.stdenv.hostPlatform.system}.default
-            vim
-            atuin
-            syncthing
+      packages = forAllSystems (
+        { pkgs }: {
+          default = pkgs.buildEnv {
+            name = "fara";
+            paths = with pkgs; [
+              core.packages.${pkgs.stdenv.hostPlatform.system}.default
+              vim
+              atuin
+              syncthing
 
-            # Programming Languages
-            nodejs_24
-            pnpm # pnpm 12 is a rust binary with its own bundled nodejs-slim, no nodejs override
+              # Programming Languages
+              nodejs_24
+              pnpm # pnpm 12 is a rust binary with its own bundled nodejs-slim, no nodejs override
 
-            # Wayland
-            grim
-            wl-clipboard
-          ];
-        };
-      });
+              # Wayland
+              grim
+              wl-clipboard
+            ];
+          };
+        }
+      );
     };
 }
