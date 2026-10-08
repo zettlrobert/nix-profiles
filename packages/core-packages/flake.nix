@@ -34,9 +34,34 @@
               config = {
                 allowUnfree = true;
               };
+              overlays = [ easyeffectsOverlay ];
             };
           }
         );
+
+      # easyeffects is Qt Quick and needs a GL context. On a non-NixOS host there is no
+      # /run/opengl-driver, so the Nix Qt build finds no EGL and aborts with
+      # "Failed to initialize graphics backend for OpenGL" before the window ever opens.
+      # The software scenegraph costs nothing for a mixer UI and the DSP is untouched.
+      #
+      # xdgdesktopportal is what gets dark mode: kdeglobals on midgard sets
+      # widgetStyle=qt6ct-style, which is not in this closure, so the style load fails and
+      # Qt falls back to its light default. The portal reports the desktop preference instead.
+      #
+      # Linux only. Guarded at the call site, and lazy here, so darwin never evaluates it.
+      easyeffectsOverlay = final: prev: {
+        easyeffects = final.symlinkJoin {
+          name = "easyeffects-wrapped-${prev.easyeffects.version}";
+          paths = [ prev.easyeffects ];
+          nativeBuildInputs = [ final.makeWrapper ];
+          postBuild = ''
+            rm "$out/bin/easyeffects"
+            makeWrapper "${prev.easyeffects}/bin/easyeffects" "$out/bin/easyeffects" \
+              --set QT_QUICK_BACKEND software \
+              --set QT_QPA_PLATFORMTHEME xdgdesktopportal
+          '';
+        };
+      };
 
       corePackages =
         pkgs: system: with pkgs; [
@@ -109,14 +134,17 @@
           presenterm # Markdown presentations
           python3Packages.pylatexenc # provides `latex2text` for render-markdown LaTeX rendering
 
-          # Audio
-          # Replaces the flatpak, which stopped persisting its gsettings
-          # Presets live in ~/.config/easyeffects/{input,output} (stowed from
-          # configurations); app settings go to dconf and stay per-machine.
-          easyeffects
-
           # AI / MCP Tools
           freecad-mcp.packages.${system}.default # FreeCAD MCP client
+        ]
+        ++ lib.optionals stdenv.hostPlatform.isLinux [
+          # Audio
+          # Replaces the flatpak. PipeWire only, so it is excluded on darwin
+          # (the mac mini); nixpkgs marks it platforms.linux and it would not build.
+          # Presets and the db/ settings live in ~/.config/easyeffects, stowed from the
+          # configurations repo, so the EQ, convolver and mic chain follow the host.
+          # Wrapped by easyeffectsOverlay above for OpenGL and dark mode.
+          easyeffects
         ];
 
       core =
