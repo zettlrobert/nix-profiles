@@ -45,8 +45,9 @@ stow git zsh starship lazygit  # etc.
 ## 5. Keeping things up to date
 
 ```bash
-# from anywhere inside this repo
-cd packages/core-packages && nix flake update
-cd ../../profiles/<host>  && nix flake update
-nix profile upgrade --all
+# from the repo root
+./update-flakes.sh          # bump and commit every flake.lock
+nix profile upgrade --all   # rebuild the active profile
 ```
+
+The script needs a clean git tree. For the by-hand equivalent and why the order matters, see [usage.md](usage.md#update-the-shared-nixpkgs-pin).

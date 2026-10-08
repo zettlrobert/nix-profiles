@@ -6,7 +6,7 @@ Per-host package profiles for non-NixOS systems, built on a shared `core-package
 
 ```
 nix-profiles/
-├── docs/                          # bootstrap, structure, usage
+├── docs/                          # bootstrap, structure, usage, workflow
 ├── packages/
 │   ├── core-packages/             # shared base, every profile pulls this in
 │   └── freecad-mcp/               # standalone installable flake
@@ -15,6 +15,7 @@ nix-profiles/
     ├── midgard/                   # workstation profile (AMD GPU, local AI)
     ├── nebula/                    # minimal aarch64 profile
     └── mac-mini/                  # macOS profile
+└── update-flakes.sh               # bump every flake.lock in dependency order and commit
 ```
 
 `packages/` holds anything that produces a derivation. `profiles/` holds per-host `buildEnv` compositions that consume one or more packages.
@@ -36,10 +37,11 @@ nix profile add ./packages/freecad-mcp
 Update everything:
 
 ```bash
-cd packages/core-packages && nix flake update
-cd ../../profiles/<host>  && nix flake update
-nix profile upgrade --all
+./update-flakes.sh            # bump and commit every flake.lock, leaf first
+nix profile upgrade --all     # rebuild the active profile against the new locks
 ```
+
+The script is a shortcut for the manual steps in [docs/usage.md](docs/usage.md#update-the-shared-nixpkgs-pin).
 
 ## Documentation
 

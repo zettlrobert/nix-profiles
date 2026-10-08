@@ -20,10 +20,10 @@ Anything under `packages/` is a flake that exposes `packages.${system}.default`.
 
 ## Pin a specific revision
 
-Profiles install from the current working tree by default. To pin a specific commit:
+Profiles install from the current working tree by default. To pin a specific commit, point at the profile's subdirectory (the repo root has no `flake.nix`):
 
 ```bash
-nix profile add github:zettlrobert/nix-profiles?rev=<sha>#packages.x86_64-linux.default --refresh
+nix profile add "github:zettlrobert/nix-profiles?rev=<sha>&dir=profiles/<host>" --refresh
 ```
 
 ## List what's installed
@@ -52,22 +52,44 @@ Important: `nix profile upgrade` re-resolves each flake input, but it does **not
 
 ## Update the shared nixpkgs pin
 
-All profiles follow `core/nixpkgs`, so updating core cascades everywhere on the next `nix flake update`.
+All profiles follow `core/nixpkgs`, so updating core cascades everywhere on the next `nix flake update`. Core itself depends on `packages/freecad-mcp`, so the order is leaf first: `freecad-mcp`, then `core-packages`, then each profile. Updating a parent before its child locks the parent against the child's stale lock, and profiles end up on different nixpkgs revisions.
+
+Shortcut, from the repo root with a clean git tree:
 
 ```bash
-# 1. Bump core
-cd packages/core-packages
-nix flake update
+./update-flakes.sh          # updates all six locks in order and commits them
+nix profile upgrade --all   # rebuild the active profile against the new locks
+```
 
-# 2. Bump the profile (picks up core's new commit via nixpkgs.follows)
-cd ../../profiles/<host>
-nix flake update
+Pass `--no-commit` to stage the lock files without committing. The script refuses to run with uncommitted changes, because the lock would then reflect a `flake.nix` that is not in the commit.
 
-# 3. Rebuild the active profile against the new lock
+By hand, same thing:
+
+```bash
+# 1. Bump the leaf package flake
+nix flake update --flake ./packages/freecad-mcp
+
+# 2. Bump core (picks up freecad-mcp's new lock)
+nix flake update --flake ./packages/core-packages
+
+# 3. Bump every profile (picks up core's new nixpkgs via nixpkgs.follows)
+for p in profiles/*/; do nix flake update --flake "./$p"; done
+
+# 4. Commit the locks so other machines see the same pin
+git add '*/flake.lock'
+git commit -m "chore: update nix flake locks"
+
+# 5. Rebuild the active profile against the new lock
 nix profile upgrade --all
 ```
 
-Commit the updated `flake.lock` files so other machines see the same pin.
+Verify all locks agree on one nixpkgs revision:
+
+```bash
+grep -h '"rev"' */*/flake.lock | sort | uniq -c
+```
+
+One line in the output means every lock points at the same commit.
 
 ## Remove
 
@@ -135,8 +157,8 @@ nix profile add ./profiles/<new-host>
 | Add a single package | `nix profile add ./packages/<pkg>` |
 | List installed | `nix profile list` |
 | Upgrade all | `nix profile upgrade --all` |
-| Bump shared nixpkgs | `cd packages/core-packages && nix flake update` |
-| Bump profile lock | `cd profiles/<host> && nix flake update` |
+| Bump every flake.lock and commit | `./update-flakes.sh` |
+| Bump one flake's lock | `nix flake update --flake ./profiles/<host>` |
 | Remove an entry | `nix profile remove <index>` |
 | Roll back one generation | `nix profile rollback` |
 | Garbage-collect | `nix store gc` |

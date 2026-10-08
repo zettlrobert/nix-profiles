@@ -95,8 +95,9 @@ Default priority is 5. Reinstall the loser with a higher priority if you want it
 
 ## Lock and pin discipline
 
-- After running `nix flake update` in `packages/core-packages` or a profile, commit the updated `flake.lock`. Without that, other machines (and yggdrasil) won't see the same pin.
-- Bump `core` first, then each profile. The `nixpkgs.follows` directive means profile locks only catch up to core's pin when you run `nix flake update` *inside the profile*.
+- `./update-flakes.sh` bumps every lock in dependency order and commits them. Prefer it over updating flakes one at a time.
+- If you do it by hand, go leaf first: `packages/freecad-mcp`, then `packages/core-packages`, then each profile. The `nixpkgs.follows` directive means a profile lock only catches up to core's pin when you run `nix flake update` on *that profile*. Before the script existed the profiles had drifted onto three different nixpkgs revisions this way.
+- Commit the updated `flake.lock` files. Without that, other machines (and yggdrasil) won't see the same pin.
 - For reproducibility on a new machine, install with an explicit revision:
   ```bash
   nix profile add github:zettlrobert/nix-profiles?rev=<sha>&dir=profiles/midgard
