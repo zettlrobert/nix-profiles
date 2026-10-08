@@ -38,7 +38,7 @@
 
             # Programming Languages
             nodejs_24
-            (pnpm.override { nodejs = nodejs_24; })
+            pnpm # pnpm 12 is a rust binary with its own bundled nodejs-slim, no nodejs override
 
             # Wayland
             grim
