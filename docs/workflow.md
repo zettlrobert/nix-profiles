@@ -93,6 +93,16 @@ nix profile add --priority 4 ./packages/<pkg>
 
 Default priority is 5. Reinstall the loser with a higher priority if you want it second-place but still in the closure.
 
+## Formatting
+
+All flakes are formatted with the official `nixfmt`. The formatter is exposed from core as `nixfmt-tree`, a treefmt wrapper that walks the whole repo, so one command formats everything:
+
+```bash
+nix run ./packages/core-packages#formatter.x86_64-linux
+```
+
+Run it before committing a `flake.nix` change. It prints how many files changed.
+
 ## Lock and pin discipline
 
 - `./update-flakes.sh` bumps every lock in dependency order and commits them. Prefer it over updating flakes one at a time.

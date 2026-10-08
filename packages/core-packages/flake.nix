@@ -64,7 +64,9 @@
       };
 
       corePackages =
-        pkgs: system: with pkgs; [
+        pkgs: system:
+        with pkgs;
+        [
           # All core packages shared across systems
           # CLI Utils - Modern CLI replacements
           bat # cat replacement
@@ -161,5 +163,9 @@
           default = core pkgs system;
         }
       );
+
+      # `nix run ./packages/core-packages#formatter.<system>` from the repo root
+      # formats every flake.nix in the tree with the official nixfmt.
+      formatter = forAllSystems ({ pkgs, ... }: pkgs.nixfmt-tree);
     };
 }
