@@ -122,6 +122,7 @@
           neovim-unwrapped # Editor
           static-web-server # Static server
           vale # prose linter (driven by vale-ls in nvim)
+          forgejo-cli # Forgejo CLI
 
           # DevOps/Infrastructure - Infrastructure tools
           google-cloud-sdk # GCP CLI
