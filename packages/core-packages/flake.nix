@@ -5,6 +5,8 @@
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
     freecad-mcp.url = "path:../freecad-mcp";
     freecad-mcp.inputs.nixpkgs.follows = "nixpkgs";
+    githooks.url = "github:zettlrobert/githooks";
+    githooks.inputs.nixpkgs.follows = "nixpkgs";
   };
 
   outputs =
@@ -12,6 +14,7 @@
       self,
       nixpkgs,
       freecad-mcp,
+      githooks,
     }:
     let
       # Systems supported
@@ -140,6 +143,10 @@
           # AI / MCP Tools
           freecad-mcp.packages.${system}.default # FreeCAD MCP client
         ]
+        # lefthook, the linters and the commit conventions for every repo (github:zettlrobert/githooks).
+        # Global so hooks also run from GUI git clients and plain terminals. githooks has no
+        # x86_64-darwin output, so it is added only where it exists.
+        ++ lib.optionals (githooks.packages ? ${system}) [ githooks.packages.${system}.default ]
         ++ lib.optionals stdenv.hostPlatform.isLinux [
           # Audio
           # Replaces the flatpak. PipeWire only, so it is excluded on darwin

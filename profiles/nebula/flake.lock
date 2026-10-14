@@ -3,6 +3,7 @@
     "core": {
       "inputs": {
         "freecad-mcp": "freecad-mcp",
+        "githooks": "githooks",
         "nixpkgs": "nixpkgs"
       },
       "locked": {
@@ -33,6 +34,27 @@
       "parent": [
         "core"
       ]
+    },
+    "githooks": {
+      "inputs": {
+        "nixpkgs": [
+          "core",
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1791969932,
+        "narHash": "sha256-76hK1/X5Uy+ZWqs8RNI7CiO6SvbLtdAQFbpu6tLwhlM=",
+        "owner": "zettlrobert",
+        "repo": "githooks",
+        "rev": "b95682edb4554a42482c493831be0bff89e377c7",
+        "type": "github"
+      },
+      "original": {
+        "owner": "zettlrobert",
+        "repo": "githooks",
+        "type": "github"
+      }
     },
     "nixpkgs": {
       "locked": {
