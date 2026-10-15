@@ -43,11 +43,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1792052573,
-        "narHash": "sha256-ao/jqyWiknV5d/GBf18o5OG305kaoy+vHbs5rNvknbA=",
+        "lastModified": 1792054584,
+        "narHash": "sha256-7pP1sJBacgBHGepfc5tpwKc6hAw5fcM8vNmi1N+jWRs=",
         "owner": "zettlrobert",
         "repo": "githooks",
-        "rev": "fe6ba3fadedc3623bd415a2b3338cb92d8af243d",
+        "rev": "37b85e2b7e0c33f98e3f77d1edabd38f3c9fc4a9",
         "type": "github"
       },
       "original": {
