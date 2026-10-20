@@ -70,6 +70,9 @@
               llama-cpp-rocm
               openai-whisper
 
+              # Document OCR
+              ocrmypdf
+
               # Identification
               ausweisapp
             ];
