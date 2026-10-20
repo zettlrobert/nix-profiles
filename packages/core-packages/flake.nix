@@ -97,6 +97,7 @@
           zoxide # cd replacement
           herdr # AI Multiplexer
           crush # AI coding agent in the terminal (Charm)
+          atuin # Make your terminal magical, sync shell history with end-to-end encryption
 
           # System Tools - Core system utilities
           coreutils-full # GNU Coreutils (full features)
