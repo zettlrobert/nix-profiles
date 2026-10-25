@@ -88,6 +88,7 @@
           xh # HTTP client
           fastfetch # fetch system information
           unzip # unzip utility
+          wget # non-interactive network downloader
 
           # Shell Utils - Shell enhancements
           jq # JSON processor
