@@ -56,6 +56,22 @@
         "type": "github"
       }
     },
+    "llama-cpp": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "path": "../../packages/llama-cpp",
+        "type": "path"
+      },
+      "original": {
+        "path": "../../packages/llama-cpp",
+        "type": "path"
+      },
+      "parent": []
+    },
     "nixpkgs": {
       "locked": {
         "lastModified": 1792842277,
@@ -75,6 +91,7 @@
     "root": {
       "inputs": {
         "core": "core",
+        "llama-cpp": "llama-cpp",
         "nixpkgs": [
           "core",
           "nixpkgs"

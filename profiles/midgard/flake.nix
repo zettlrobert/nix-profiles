@@ -4,6 +4,8 @@
   inputs = {
     core.url = "path:../../packages/core-packages";
     nixpkgs.follows = "core/nixpkgs";
+    llama-cpp.url = "path:../../packages/llama-cpp";
+    llama-cpp.inputs.nixpkgs.follows = "nixpkgs";
   };
 
   outputs =
@@ -11,6 +13,7 @@
       self,
       nixpkgs,
       core,
+      llama-cpp,
     }:
     let
       # midgard is one x86_64 Linux workstation. llama-cpp-rocm, amdgpu_top,
@@ -30,19 +33,7 @@
               config = {
                 allowUnfree = true;
               };
-              overlays = [
-                # llama-cpp 0.4.1 builds its web UI (tools/ui) with nodejs_latest.
-                # Node 26.9.0 fails its own test suite under Nix: test-fs-cp-async-file-modes
-                # creates a setuid file, and Nix's filter-syscalls seccomp filter forbids that
-                # by design. It fails on Hydra too, so nothing is cached and every machine must
-                # build it locally and fail. See NixOS/nixpkgs#564449.
-                # Node is build-time only here (no nodejs in llama-cpp's runtime closure),
-                # so pinning the UI build to the cached nodejs_24 is safe.
-                # Remove this overlay once #564449 is fixed and Node 26 is cached again.
-                (final: prev: {
-                  llama-cpp = prev.llama-cpp.override { nodejs_latest = final.nodejs_24; };
-                })
-              ];
+              overlays = [ ];
             };
           }
         );
@@ -67,7 +58,7 @@
               wl-clipboard
 
               # Local AI
-              llama-cpp-rocm
+              llama-cpp.packages.${system}.rocm # AMD ROCm/HIP build (the `rocm` variant)
               openai-whisper
               pi-coding-agent
 
