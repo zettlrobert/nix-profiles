@@ -2,7 +2,6 @@
   "nodes": {
     "core": {
       "inputs": {
-        "freecad-mcp": "freecad-mcp",
         "githooks": "githooks",
         "nixpkgs": "nixpkgs"
       },
@@ -19,21 +18,18 @@
     "freecad-mcp": {
       "inputs": {
         "nixpkgs": [
-          "core",
           "nixpkgs"
         ]
       },
       "locked": {
-        "path": "../freecad-mcp",
+        "path": "../../packages/freecad-mcp",
         "type": "path"
       },
       "original": {
-        "path": "../freecad-mcp",
+        "path": "../../packages/freecad-mcp",
         "type": "path"
       },
-      "parent": [
-        "core"
-      ]
+      "parent": []
     },
     "githooks": {
       "inputs": {
@@ -91,6 +87,7 @@
     "root": {
       "inputs": {
         "core": "core",
+        "freecad-mcp": "freecad-mcp",
         "llama-cpp": "llama-cpp",
         "nixpkgs": [
           "core",

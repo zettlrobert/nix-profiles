@@ -3,8 +3,6 @@
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
-    freecad-mcp.url = "path:../freecad-mcp";
-    freecad-mcp.inputs.nixpkgs.follows = "nixpkgs";
     githooks.url = "github:zettlrobert/githooks";
     githooks.inputs.nixpkgs.follows = "nixpkgs";
   };
@@ -13,7 +11,6 @@
     {
       self,
       nixpkgs,
-      freecad-mcp,
       githooks,
     }:
     let
@@ -141,9 +138,6 @@
           # Presentations - Presentation tools
           presenterm # Markdown presentations
           python3Packages.pylatexenc # provides `latex2text` for render-markdown LaTeX rendering
-
-          # AI / MCP Tools
-          freecad-mcp.packages.${system}.default # FreeCAD MCP client
         ]
         # lefthook, the linters and the commit conventions for every repo (github:zettlrobert/githooks).
         # Global so hooks also run from GUI git clients and plain terminals. githooks has no

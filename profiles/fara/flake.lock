@@ -2,7 +2,6 @@
   "nodes": {
     "core": {
       "inputs": {
-        "freecad-mcp": "freecad-mcp",
         "githooks": "githooks",
         "nixpkgs": "nixpkgs"
       },
@@ -15,25 +14,6 @@
         "type": "path"
       },
       "parent": []
-    },
-    "freecad-mcp": {
-      "inputs": {
-        "nixpkgs": [
-          "core",
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "path": "../freecad-mcp",
-        "type": "path"
-      },
-      "original": {
-        "path": "../freecad-mcp",
-        "type": "path"
-      },
-      "parent": [
-        "core"
-      ]
     },
     "githooks": {
       "inputs": {

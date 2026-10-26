@@ -6,6 +6,10 @@
     nixpkgs.follows = "core/nixpkgs";
     llama-cpp.url = "path:../../packages/llama-cpp";
     llama-cpp.inputs.nixpkgs.follows = "nixpkgs";
+    # FreeCAD MCP is workstation-only, so it is a midgard input here rather than
+    # in the shared core-packages (servers and the mac do not need it).
+    freecad-mcp.url = "path:../../packages/freecad-mcp";
+    freecad-mcp.inputs.nixpkgs.follows = "nixpkgs";
   };
 
   outputs =
@@ -14,6 +18,7 @@
       nixpkgs,
       core,
       llama-cpp,
+      freecad-mcp,
     }:
     let
       # midgard is one x86_64 Linux workstation. llama-cpp-rocm, amdgpu_top,
@@ -61,6 +66,9 @@
               llama-cpp.packages.${system}.rocm # AMD ROCm/HIP build (the `rocm` variant)
               openai-whisper
               pi-coding-agent
+
+              # CAD / MCP
+              freecad-mcp.packages.${system}.default # FreeCAD MCP client (moved off core-packages)
 
               # Document OCR
               ocrmypdf
