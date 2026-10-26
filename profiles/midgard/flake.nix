@@ -69,6 +69,7 @@
               # Local AI
               llama-cpp-rocm
               openai-whisper
+              pi-coding-agent
 
               # Document OCR
               ocrmypdf
