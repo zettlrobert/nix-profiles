@@ -60,7 +60,15 @@
               zoxide
               yazi
               stow
-              atuin
+              # atuin builds from source here (no aarch64 substitute for this rev) and nixpkgs
+              # runs its test suite. e2e_ai_sessions::a_huge_message_reads_back is timing-sensitive:
+              # on the Pi 4 the redactor exceeds its budget and yields "[not captured: took too long
+              # to redact]", failing the readback. Skip just that test; the binary is unaffected.
+              # Scoped to nebula on purpose - overriding atuin in core-packages would break the
+              # cached x86_64 binary on midgard and force a source build there too.
+              (atuin.overrideAttrs (old: {
+                checkFlags = (old.checkFlags or [ ]) ++ [ "--skip=a_huge_message_reads_back" ];
+              }))
             ];
           };
         }
