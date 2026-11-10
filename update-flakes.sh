@@ -2,7 +2,7 @@
 # Update every flake.lock in this repo and commit the result.
 #
 # Flakes depend on each other via path: inputs, so they are updated
-# leaf-first:  freecad-mcp -> core-packages -> profiles/*
+# leaf-first:  freecad-mcp, llama-cpp, core-packages -> profiles/*
 # Updating a parent before its child would lock the parent against
 # the child's stale lock and leave two nixpkgs revisions in the repo.
 #
@@ -39,6 +39,7 @@ fi
 # Dependency order. Add new package flakes here; profiles are discovered.
 flake_dirs=(
   packages/freecad-mcp
+  packages/llama-cpp
   packages/core-packages
 )
 while IFS= read -r dir; do
