@@ -64,7 +64,6 @@
 
               # Local AI
               llama-cpp.packages.${system}.rocm # AMD ROCm/HIP build (the `rocm` variant)
-              openai-whisper
               pi-coding-agent
 
               # CAD / MCP
