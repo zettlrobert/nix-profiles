@@ -18,10 +18,18 @@ experimental-features = nix-command flakes
 
 ## 2. Clone this repo
 
+Forgejo is the main remote. GitHub is a mirror that every push also updates.
+
 ```bash
-git clone https://github.com/zettlrobert/nix-profiles.git ~/repositories/github.com/zettlrobert/nix-profiles
-cd ~/repositories/github.com/zettlrobert/nix-profiles
+git clone git@forgejo.lyn:zettlrobert/nix-profiles.git ~/repositories/forgejo/zettlrobert/nix-profiles
+cd ~/repositories/forgejo/zettlrobert/nix-profiles
+git remote set-url --add --push origin git@forgejo.lyn:zettlrobert/nix-profiles.git
+git remote set-url --add --push origin git@github.com:zettlrobert/nix-profiles.git
+git remote add github git@github.com:zettlrobert/nix-profiles.git   # fetch-only, to spot drift
+git config remote.github.pushurl DISABLED-push-via-origin
 ```
+
+`forgejo.lyn` only resolves on the home network. Off the LAN, clone `https://github.com/zettlrobert/nix-profiles.git` instead.
 
 ## 3. Add the profile for your host
 
