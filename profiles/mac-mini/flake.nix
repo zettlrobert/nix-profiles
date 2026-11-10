@@ -13,13 +13,8 @@
       core,
     }:
     let
-      # Systems supported
-      allSystems = [
-        "x86_64-linux" # 64-bit Intel/AMD Linux
-        "aarch64-linux" # 64-bit ARM Linux
-        "x86_64-darwin" # 64-bit Intel macOS
-        "aarch64-darwin" # 64-bit ARM macOS
-      ];
+      # mac-mini is one Apple Silicon Mac. nixpkgs 26.11 dropped x86_64-darwin.
+      allSystems = [ "aarch64-darwin" ];
 
       # Helper to provide system-specific attributes
       forAllSystems =
