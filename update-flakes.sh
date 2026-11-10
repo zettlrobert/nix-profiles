@@ -6,15 +6,50 @@
 # Updating a parent before its child would lock the parent against
 # the child's stale lock and leave two nixpkgs revisions in the repo.
 #
-# Usage:  ./update-flakes.sh               update and commit
-#         ./update-flakes.sh --no-commit   update only
+# After updating, every profile is dry-run built for each system it
+# declares, to list what cache.nixos.org does not have yet. nixpkgs-unstable
+# advances before Hydra has built every leaf package, so a fresh bump can
+# mean compiling things like biome locally for a day or two.
+#
+# Usage:  ./update-flakes.sh                  update, check cache, commit
+#         ./update-flakes.sh --no-commit      update and check only
+#         ./update-flakes.sh --allow-builds   commit even if things would build
 
 set -euo pipefail
 
 cd "$(git rev-parse --show-toplevel)"
 
 commit=true
-[[ "${1:-}" == "--no-commit" ]] && commit=false
+allow_builds=false
+for arg in "$@"; do
+  case "$arg" in
+    --no-commit) commit=false ;;
+    --allow-builds) allow_builds=true ;;
+    *) printf 'unknown option: %s\n' "$arg" >&2; exit 2 ;;
+  esac
+done
+
+# Derivations that always build locally, matched as "<system> <name>".
+# Everything else that would build means the binary cache is behind.
+expected_local=(
+  '* source'                  # flake sources copied into the store
+  '* core'                    # our buildEnvs and wrappers
+  '* fara' '* mac-mini' '* midgard' '* nebula'
+  '* githooks'                # github:zettlrobert/githooks, not on cache.nixos.org
+  '* easyeffects-wrapped-*'   # core-packages overlay around the cached easyeffects
+  '* *freecad-robust-mcp-*'   # packages/freecad-mcp, not in nixpkgs
+  '* crush-*'                 # unfree (FSL-1.1-MIT), Hydra never builds it
+  '* *yamllint-*'             # githooks overrides yamllint until nixpkgs has 1.38.0
+  'aarch64-linux atuin-*'     # nebula skips a flaky test, which changes the hash
+)
+is_expected() {
+  local pat
+  for pat in "${expected_local[@]}"; do
+    # shellcheck disable=SC2053 # glob match on purpose
+    [[ "$1" == $pat ]] && return 0
+  done
+  return 1
+}
 
 # ── output helpers ──────────────────────────────────────────────────
 if [[ -t 1 ]]; then
@@ -66,6 +101,60 @@ for dir in "${flake_dirs[@]}"; do
     ok "updated"
   fi
 done
+
+# ── cache check ─────────────────────────────────────────────────────
+# Dry-run counts paths already in the local store as available, so a
+# re-run after building something here can miss it for x86_64-linux.
+# Right after a bump the new hashes are not local yet, so it is accurate.
+header "Checking what cache.nixos.org is missing"
+unexpected=()
+failed=()
+for dir in "${flake_dirs[@]}"; do
+  [[ "$dir" == profiles/* ]] || continue
+  mapfile -t systems < <(nix eval --raw "./$dir#packages" --apply 'p: builtins.concatStringsSep "\n" (builtins.attrNames p)')
+  for system in "${systems[@]}"; do
+    if ! out=$(nix build --dry-run "./$dir#packages.$system.default" 2>&1); then
+      printf '  %s✘%s %s %s(%s)%s failed to evaluate:\n' "$red" "$reset" "$dir" "$dim" "$system" "$reset"
+      printf '%s\n' "$out" | grep -E '^ *error:' | tail -1 | sed "s/^ */    ${dim}│${reset} /"
+      failed+=("$dir ($system)")
+      continue
+    fi
+    mapfile -t builds < <(printf '%s\n' "$out" |
+      awk '/will be built:/ {on=1; next} /will be fetched|^[^ ]/ {on=0} on && /\.drv$/' |
+      sed -E 's#^ */nix/store/[a-z0-9]{32}-##; s#\.drv$##')
+    missing=()
+    for name in "${builds[@]}"; do
+      is_expected "$system $name" || missing+=("$name")
+    done
+    if ((${#missing[@]})); then
+      printf '  %s⚠%s %s %s(%s)%s builds: %s\n' "$yellow" "$reset" "$dir" "$dim" "$system" "$reset" "${missing[*]}"
+      unexpected+=("${missing[@]/#/$system }")
+    else
+      ok "$dir ${dim}($system)${reset}"
+    fi
+  done
+done
+
+if ((${#failed[@]})); then
+  echo
+  if $commit && ! git diff --quiet -- '*/flake.lock'; then
+    git checkout -- '*/flake.lock'
+    die "${#failed[@]} profile output(s) failed to evaluate, locks reverted"
+  fi
+  die "${#failed[@]} profile output(s) failed to evaluate"
+fi
+
+if ((${#unexpected[@]})) && $commit && ! $allow_builds && ! git diff --quiet -- '*/flake.lock'; then
+  echo
+  printf '  %s⚠%s %d package(s) would compile locally. Waiting a day or two usually lets Hydra catch up.\n' \
+    "$yellow" "$reset" "${#unexpected[@]}"
+  answer=n
+  [[ -t 0 ]] && read -r -p "  Commit the new locks anyway? [y/N] " answer
+  if [[ "$answer" != [yY]* ]]; then
+    git checkout -- '*/flake.lock'
+    die "locks reverted, re-run later or pass --allow-builds"
+  fi
+fi
 
 # ── commit ──────────────────────────────────────────────────────────
 git add -- '*/flake.lock'
